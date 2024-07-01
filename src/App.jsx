@@ -9,6 +9,7 @@ import Login from './pages/Login';
 import PageNotFound from './pages/PageNotFound';
 import Settings from './pages/Settings';
 import GlobalStyles from './styles/GlobalStyles';
+import AppLayout from './ui/AppLayout';
 
 
 
@@ -21,16 +22,21 @@ function App() {
       <BrowserRouter>
         <GlobalStyles />
         <Routes>
-          <Route index element={<Dashboard />} />
-          <Route path='dashboard' element={<Dashboard />} />
-          <Route path="bookings" element={<Bookings />} />
-          <Route path="users" element={<NewUsers />} />
-          <Route path="cabins" element={<Cabins />} />
-          <Route path="account" element={<Account />} />
-          <Route path="account" element={<Account />} />
-          <Route path="login" element={<Login />} />
-          <Route path="settings" element={<Settings />} />
-          <Route path="*" element={<PageNotFound />} />
+          <Route element={<AppLayout />} >
+
+            <Route index element={<Dashboard />} />
+            <Route path='dashboard' element={<Dashboard />} />
+            <Route path="bookings" element={<Bookings />} />
+            <Route path="users" element={<NewUsers />} />
+            <Route path="cabins" element={<Cabins />} />
+            <Route path="account" element={<Account />} />
+            <Route path="account" element={<Account />} />
+            <Route path="login" element={<Login />} />
+            <Route path="settings" element={<Settings />} />
+            <Route path="*" element={<PageNotFound />} />
+
+          </Route>
+
         </Routes>
       </BrowserRouter>
 
