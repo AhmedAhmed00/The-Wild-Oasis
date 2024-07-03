@@ -34,13 +34,38 @@ export async function deleteCabin(cabinID) {
 
 
 export async function insertNewCabin(newCabin) {
+
+    const imageName = `${Math.random()}-${newCabin.image.name}`.replaceAll("/", "")
+    const imagePath = `https://fcvebldtqtikhfqkfqjh.supabase.co/storage/v1/object/public/cabin-images/${imageName}`
+
+
     const { data, error } = await supabase
         .from('cabins')
-        .insert([newCabin])
+        .insert([{ ...newCabin, image: imagePath }])
         .select()
+
+
     if (error) {
         console.log("feiled while adding cabin")
     }
+
+
+    const { error: bucketError } = await supabase
+        .storage
+        .from('cabin-images')
+        .upload(imageName, newCabin.image)
+
+    if (bucketError) {
+        await supabase
+            .from('cabins')
+            .delete()
+            .eq('id', newCabin.id) // the row which is its id equals the cabin id
+
+    }
+
+
+
+
 
     return data
 
