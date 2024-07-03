@@ -11,34 +11,47 @@ import Settings from './pages/Settings';
 import GlobalStyles from './styles/GlobalStyles';
 import AppLayout from './ui/AppLayout';
 
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import { Toaster } from 'react-hot-toast';
 
 
 
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 3000
+    }
+  }
+})
 
 function App() {
 
   return (
     <>
-      <BrowserRouter>
-        <GlobalStyles />
-        <Routes>
-          <Route element={<AppLayout />} >
+      <QueryClientProvider client={queryClient} >
+        <Toaster position='top-center' />
+        <ReactQueryDevtools initialIsOpen={false} />
+        <BrowserRouter>
+          <GlobalStyles />
+          <Routes>
+            <Route element={<AppLayout />} >
+              <Route index element={<Dashboard />} />
+              <Route path='dashboard' element={<Dashboard />} />
+              <Route path="bookings" element={<Bookings />} />
+              <Route path="users" element={<NewUsers />} />
+              <Route path="cabins" element={<Cabins />} />
+              <Route path="account" element={<Account />} />
+              <Route path="account" element={<Account />} />
+              <Route path="login" element={<Login />} />
+              <Route path="settings" element={<Settings />} />
+              <Route path="*" element={<PageNotFound />} />
+            </Route>
+          </Routes>
+        </BrowserRouter>
 
-            <Route index element={<Dashboard />} />
-            <Route path='dashboard' element={<Dashboard />} />
-            <Route path="bookings" element={<Bookings />} />
-            <Route path="users" element={<NewUsers />} />
-            <Route path="cabins" element={<Cabins />} />
-            <Route path="account" element={<Account />} />
-            <Route path="account" element={<Account />} />
-            <Route path="login" element={<Login />} />
-            <Route path="settings" element={<Settings />} />
-            <Route path="*" element={<PageNotFound />} />
+      </QueryClientProvider>
 
-          </Route>
-
-        </Routes>
-      </BrowserRouter>
 
 
 
