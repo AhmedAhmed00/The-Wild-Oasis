@@ -33,23 +33,33 @@ export async function deleteCabin(cabinID) {
 
 
 
-export async function insertNewCabin(newCabin) {
+export async function insertNewCabin(newCabin, id) {
+    console.log(newCabin, id);
 
+    // const hasImagePath = newCabin.image?.startsWith?.(supabase)
     const imageName = `${Math.random()}-${newCabin.image.name}`.replaceAll("/", "")
     const imagePath = `https://fcvebldtqtikhfqkfqjh.supabase.co/storage/v1/object/public/cabin-images/${imageName}`
 
 
-    const { data, error } = await supabase
-        .from('cabins')
-        .insert([{ ...newCabin, image: imagePath }])
-        .select()
+
+    // Create/Edit
+    let query = supabase.from('cabins')
+
+
+    // create new cabin
+    if (!id) query = query.insert([{ ...newCabin, image: imagePath }])
+
+    // edit existing Cabin
+    if (id) query = query.update({ ...newCabin, image: imagePath }).eq('id', id)
+
+    const { data, error } = await query.select().single()
 
 
     if (error) {
         console.log("feiled while adding cabin")
     }
 
-
+    // upload image to supaBase
     const { error: bucketError } = await supabase
         .storage
         .from('cabin-images')
@@ -60,7 +70,6 @@ export async function insertNewCabin(newCabin) {
             .from('cabins')
             .delete()
             .eq('id', newCabin.id) // the row which is its id equals the cabin id
-
     }
 
 

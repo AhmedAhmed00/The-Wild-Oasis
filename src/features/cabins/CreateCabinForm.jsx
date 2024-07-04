@@ -6,6 +6,7 @@ import Button from './../../ui/Button';
 import Form from './../../ui/Form';
 import { useForm } from "react-hook-form";
 import useCreateCabin from "./useCreateCabin";
+import useUpdateCabin from "./useUpdateCabin";
 
 
 
@@ -45,16 +46,31 @@ const Error = styled.span`
   color: var(--color-red-700);
 `;
 
-function CreateCabinForm() {
+function CreateCabinForm({ editedCabinData = {} }) {
 
-  const { register, formState: { errors }, getValues, handleSubmit, reset } = useForm()
 
-  const { data, isError, mutate: addNewCabin, status } = useCreateCabin()
+  const { id: editID, ...editedValues } = editedCabinData
+  const isEditSession = Boolean(editID)
+  const { register, formState: { errors }, getValues, handleSubmit, reset } = useForm({
+    defaultValues: isEditSession ? editedValues : {}
+
+
+  })
+
+  const { addNewCabin, isErrorDeleting, deletingStatus } = useCreateCabin()
+
+  const { updateCabin, editingStatus } = useUpdateCabin()
+
+  const isLoadingStatus = (deletingStatus === 'pending' || editingStatus === 'pending')
+
+
 
 
   function onSumbit(newCabin) {
-    // reset()
-    addNewCabin({ ...newCabin, image: newCabin.image[0] })
+
+    const image = typeof newCabin.image === 'string' ? newCabin.image : newCabin.image[0]
+    if (isEditSession) updateCabin({ newCabinData: { ...newCabin, image: image }, id: editID })
+    else addNewCabin({ ...newCabin, image: image })
   }
 
 
@@ -62,7 +78,7 @@ function CreateCabinForm() {
     <Form onSubmit={handleSubmit(onSumbit)}>
       <FormRow>
         <Label htmlFor="name">Cabin name</Label>
-        <Input disabled={status === 'pending'} type="text" id="name"  {...register("name", {
+        <Input disabled={isLoadingStatus} type="text" id="name"  {...register("name", {
           required: "the name is required input",
           minLength: {
             value: 3,
@@ -74,7 +90,7 @@ function CreateCabinForm() {
 
       <FormRow>
         <Label htmlFor="maxCapacity">Maximum capacity</Label>
-        <Input disabled={status === 'pending'} type="number" id="maxCapacity" {...register("maxCapacity", {
+        <Input disabled={isLoadingStatus} type="number" id="maxCapacity" {...register("maxCapacity", {
           required: "this field is required ",
           validate: (value) => value < 10 || "Should be less than 10 guests"
         })} />
@@ -85,7 +101,7 @@ function CreateCabinForm() {
 
       <FormRow>
         <Label htmlFor="regularPrice">Regular price</Label>
-        <Input disabled={status === 'pending'} type="number" id="regularPrice" {...register("regularPrice", {
+        <Input disabled={isLoadingStatus} type="number" id="regularPrice" {...register("regularPrice", {
           required: "this field is required ",
           validate: (value) => value > 100 || "must be greater than 100"
         })} />
@@ -94,7 +110,7 @@ function CreateCabinForm() {
 
       <FormRow>
         <Label htmlFor="discount">Discount</Label>
-        <Input disabled={status === 'pending'} type="number" id="discount" defaultValue={0} {...register("discount", {
+        <Input disabled={isLoadingStatus} type="number" id="discount" defaultValue={0} {...register("discount", {
           required: "this field is required ",
           validate: (value) => value <= getValues().regularPrice || "cannot be greater the the regular price"
 
@@ -105,7 +121,7 @@ function CreateCabinForm() {
 
       <FormRow>
         <Label htmlFor="description">Description for website</Label>
-        <Textarea disabled={status === 'pending'} type="number" id="description" defaultValue=""  {...register("description", {
+        <Textarea disabled={isLoadingStatus} type="number" id="description" defaultValue=""  {...register("description", {
           required: "this field is required "
 
         })} />
@@ -115,7 +131,7 @@ function CreateCabinForm() {
 
       <FormRow>
         <Label htmlFor="image">Cabin photo</Label>
-        <FileInput disabled={status === 'pending'} type="file" id="image" accept="image/*"  {...register("image", {
+        <FileInput disabled={isLoadingStatus} type="file" id="image" accept="image/*"  {...register("image", {
           required: "this field is required "
         })} />
         {errors?.image?.message && <Error >{errors.image.message}</Error>}
@@ -126,9 +142,8 @@ function CreateCabinForm() {
         <Button variation="secondary" type="reset">
           Cancel
         </Button>
-        <Button disabled={status === 'pending'} >
-          Add New Cabin
-
+        <Button disabled={isLoadingStatus} >
+          {isEditSession ? "Update cabin data" : "Add New Cabin "}
         </Button>
       </FormRow>
     </Form>

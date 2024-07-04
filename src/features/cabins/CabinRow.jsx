@@ -1,6 +1,8 @@
 import styled from 'styled-components';
 import { formatCurrency } from '../../utils/helpers';
 import useDeleteCabin from './useDeleteCabin';
+import { useState } from 'react';
+import CreateCabinForm from './CreateCabinForm';
 
 
 
@@ -45,21 +47,39 @@ const Discount = styled.div`
 `;
 
 function CabinRow({ cabin }) {
+
+  const [showForm, setShowForm] = useState(false)
+
   const { name, id, maxCapacity, discount, regularPrice, image, createdAt, description } = cabin
+
+
   const { data, isError: isErroeDealtin, mutate } = useDeleteCabin()
 
 
   return (
-    <TableRow role='row'>
-      <Img src={image} alt={description} />
-      <CabinName>
-        {name}
-      </CabinName>
-      <p>Fits Up to {maxCapacity} guests</p>
-      <Price>{formatCurrency(regularPrice)}</Price>
-      <Discount>{formatCurrency(discount)}</Discount>
-      <button onClick={() => mutate(id)}>delete</button>
-    </TableRow>
+
+    <>
+
+
+      <TableRow role='row'>
+        <Img src={image} alt={description} />
+        <CabinName>
+          {name}
+        </CabinName>
+        <p>Fits Up to {maxCapacity} guests</p>
+        <Price>{formatCurrency(regularPrice)}</Price>
+        <Discount>{formatCurrency(discount)}</Discount>
+
+        <div>
+          <button onClick={() => setShowForm(show => !show)} >Update</button>
+
+          <button onClick={() => mutate(id)}>delete</button>
+        </div>
+      </TableRow >
+      {
+        showForm && <CreateCabinForm editedCabinData={cabin} />
+      }
+    </>
 
 
 
