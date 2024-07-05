@@ -3,6 +3,7 @@ import { formatCurrency } from '../../utils/helpers';
 import useDeleteCabin from './useDeleteCabin';
 import { useState } from 'react';
 import CreateCabinForm from './CreateCabinForm';
+import useCreateCabin from './useCreateCabin';
 
 
 
@@ -53,7 +54,25 @@ function CabinRow({ cabin }) {
   const { name, id, maxCapacity, discount, regularPrice, image, createdAt, description } = cabin
 
 
+  const { addNewCabin, deletingStatus, isErrorDeleting } = useCreateCabin()
+
+
+
+
   const { data, isError: isErroeDealtin, mutate } = useDeleteCabin()
+
+  function handleDuplicateCabin() {
+    addNewCabin({
+      name: `copy of ${name}`
+      , maxCapacity,
+      discount,
+      regularPrice,
+      image,
+      description
+    })
+
+  }
+
 
 
   return (
@@ -72,7 +91,7 @@ function CabinRow({ cabin }) {
 
         <div>
           <button onClick={() => setShowForm(show => !show)} >Update</button>
-
+          <button onClick={handleDuplicateCabin}>Duplicate</button>
           <button onClick={() => mutate(id)}>delete</button>
         </div>
       </TableRow >

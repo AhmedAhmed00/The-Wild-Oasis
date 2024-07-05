@@ -54,7 +54,6 @@ function CreateCabinForm({ editedCabinData = {} }) {
   const { register, formState: { errors }, getValues, handleSubmit, reset } = useForm({
     defaultValues: isEditSession ? editedValues : {}
 
-
   })
 
   const { addNewCabin, isErrorDeleting, deletingStatus } = useCreateCabin()

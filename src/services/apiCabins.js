@@ -34,11 +34,10 @@ export async function deleteCabin(cabinID) {
 
 
 export async function insertNewCabin(newCabin, id) {
-    console.log(newCabin, id);
 
-    // const hasImagePath = newCabin.image?.startsWith?.(supabase)
+    const hasImagePath = newCabin.image?.startsWith?.(supabase)
     const imageName = `${Math.random()}-${newCabin.image.name}`.replaceAll("/", "")
-    const imagePath = `https://fcvebldtqtikhfqkfqjh.supabase.co/storage/v1/object/public/cabin-images/${imageName}`
+    const imagePath = hasImagePath ? newCabin.image : `https://fcvebldtqtikhfqkfqjh.supabase.co/storage/v1/object/public/cabin-images/${imageName}`
 
 
 
@@ -60,6 +59,7 @@ export async function insertNewCabin(newCabin, id) {
     }
 
     // upload image to supaBase
+    if (hasImagePath) return data
     const { error: bucketError } = await supabase
         .storage
         .from('cabin-images')
@@ -71,6 +71,8 @@ export async function insertNewCabin(newCabin, id) {
             .delete()
             .eq('id', newCabin.id) // the row which is its id equals the cabin id
     }
+
+    console.log(data);
 
 
 
