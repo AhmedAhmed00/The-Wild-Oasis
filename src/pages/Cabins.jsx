@@ -1,17 +1,12 @@
-import { useState } from "react";
-import CabinTable from "../features/cabins/CabinTable";
 import Heading from "../ui/Heading";
 import Row from "../ui/Row";
-import Button from "../ui/Button";
 import CreateCabinForm from "../features/cabins/CreateCabinForm";
 import { useForm } from "react-hook-form";
+import AddCabin from './../features/cabins/AddCabin';
+import CabinTable from './../features/cabins/CabinTable';
 
 
 function Cabins() {
-
-  const [displayForm, setDisplayForm] = useState(false)
-
-
 
 
 
@@ -24,9 +19,7 @@ function Cabins() {
       </Row>
       <Row >
         <CabinTable />
-        <Button onClick={() => setDisplayForm((show) => !show)} >Insert New Cabin</Button>
-
-        {displayForm && <CreateCabinForm />}
+        <AddCabin />
 
       </Row>
 

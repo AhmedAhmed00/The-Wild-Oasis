@@ -11,17 +11,15 @@ import FormRow, { Error, Label } from "../../ui/FormRow";
 
 
 
-function CreateCabinForm({ editedCabinData = {} }) {
-
-
+function CreateCabinForm({ editedCabinData = {}, handleCloseModal }) {
   const { id: editID, ...editedValues } = editedCabinData
   const isEditSession = Boolean(editID)
-  const { register, formState: { errors }, getValues, handleSubmit, reset } = useForm({
+  const { register, formState: { errors }, getValues, handleSubmit } = useForm({
     defaultValues: isEditSession ? editedValues : {}
 
   })
 
-  const { addNewCabin, isErrorDeleting, deletingStatus } = useCreateCabin()
+  const { addNewCabin, deletingStatus } = useCreateCabin()
 
   const { updateCabin, editingStatus } = useUpdateCabin()
 
@@ -33,13 +31,21 @@ function CreateCabinForm({ editedCabinData = {} }) {
   function onSumbit(newCabin) {
 
     const image = typeof newCabin.image === 'string' ? newCabin.image : newCabin.image[0]
-    if (isEditSession) updateCabin({ newCabinData: { ...newCabin, image: image }, id: editID })
-    else addNewCabin({ ...newCabin, image: image })
+    if (isEditSession) updateCabin({ newCabinData: { ...newCabin, image: image }, id: editID }, {
+      onSuccess: () => {
+        handleCloseModal?.()
+      }
+    })
+    else addNewCabin({ ...newCabin, image: image }, {
+      onSuccess: () => {
+        handleCloseModal?.()
+      }
+    })
   }
 
 
   return (
-    <Form onSubmit={handleSubmit(onSumbit)}>
+    <Form onSubmit={handleSubmit(onSumbit)} type={handleCloseModal ? 'modal' : 'regular'}>
 
 
 
@@ -106,7 +112,7 @@ function CreateCabinForm({ editedCabinData = {} }) {
       </FormRow>
 
       <FormRow>
-        <Button variation="secondary" type="reset">
+        <Button onClick={() => handleCloseModal?.()} variation="secondary" type="reset">
           Cancel
         </Button>
         <Button disabled={isLoadingStatus} >

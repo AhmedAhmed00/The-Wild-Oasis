@@ -4,19 +4,13 @@ import useDeleteCabin from './useDeleteCabin';
 import { useState } from 'react';
 import CreateCabinForm from './CreateCabinForm';
 import useCreateCabin from './useCreateCabin';
+import Modal from '../../ui/Modal';
+import ConfirmDelete from './../../ui/ConfirmDelete';
+import Table from '../../ui/Table';
 
 
 
-const TableRow = styled.div`
-  display: grid;
-  grid-template-columns: 0.6fr 1.8fr 2.2fr 1fr 1fr 1fr;
-  column-gap: 2.4rem;
-  align-items: center;
-  padding: 1.4rem 2.4rem;
-  &:not(:last-child) {
-    border-bottom: 1px solid var(--color-grey-100);
-  }
-`;
+
 
 const Img = styled.img`
   display: block;
@@ -49,7 +43,6 @@ const Discount = styled.div`
 
 function CabinRow({ cabin }) {
 
-  const [showForm, setShowForm] = useState(false)
 
   const { name, id, maxCapacity, discount, regularPrice, image, createdAt, description } = cabin
 
@@ -59,7 +52,7 @@ function CabinRow({ cabin }) {
 
 
 
-  const { data, isError: isErroeDealtin, mutate } = useDeleteCabin()
+  const { data, isError: isErroeDealtin, mutate: deleteCabin } = useDeleteCabin()
 
   function handleDuplicateCabin() {
     addNewCabin({
@@ -80,7 +73,7 @@ function CabinRow({ cabin }) {
     <>
 
 
-      <TableRow role='row'>
+      <Table.Row >
         <Img src={image} alt={description} />
         <CabinName>
           {name}
@@ -88,16 +81,36 @@ function CabinRow({ cabin }) {
         <p>Fits Up to {maxCapacity} guests</p>
         <Price>{formatCurrency(regularPrice)}</Price>
         <Discount>{formatCurrency(discount)}</Discount>
-
         <div>
-          <button onClick={() => setShowForm(show => !show)} >Update</button>
+          <Modal>
+            <Modal.Open opens={'edit'}>
+              <button  >Update</button>
+            </Modal.Open>
+            <Modal.Window name={'edit'}>
+              <CreateCabinForm editedCabinData={cabin} />
+            </Modal.Window>
+          </Modal>
+
+
+          <Modal>
+            <Modal.Open opens={'delete'}>
+              <button  >Update</button>
+            </Modal.Open>
+            <Modal.Window name={'delete'}>
+              <ConfirmDelete resource={'cabins'}
+                onConfirm={() => deleteCabin(id)}
+              />
+            </Modal.Window>
+
+          </Modal>
+
+
           <button onClick={handleDuplicateCabin}>Duplicate</button>
-          <button onClick={() => mutate(id)}>delete</button>
+
+
         </div>
-      </TableRow >
-      {
-        showForm && <CreateCabinForm editedCabinData={cabin} />
-      }
+      </Table.Row >
+
     </>
 
 
