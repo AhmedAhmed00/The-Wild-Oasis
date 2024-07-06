@@ -7,19 +7,23 @@ import { useForm } from "react-hook-form";
 import useCreateCabin from "./useCreateCabin";
 import useUpdateCabin from "./useUpdateCabin";
 import FormRow, { Error, Label } from "../../ui/FormRow";
+import { useQueryClient } from '@tanstack/react-query';
+import toast from 'react-hot-toast';
 
 
 
 
 function CreateCabinForm({ editedCabinData = {}, handleCloseModal }) {
+
+
   const { id: editID, ...editedValues } = editedCabinData
   const isEditSession = Boolean(editID)
-  const { register, formState: { errors }, getValues, handleSubmit } = useForm({
+  const { register, formState: { errors }, getValues, handleSubmit, reset } = useForm({
     defaultValues: isEditSession ? editedValues : {}
 
   })
 
-  const { addNewCabin, deletingStatus } = useCreateCabin()
+  const { addNewCabin, isErrorDeleting, deletingStatus } = useCreateCabin()
 
   const { updateCabin, editingStatus } = useUpdateCabin()
 
@@ -27,6 +31,7 @@ function CreateCabinForm({ editedCabinData = {}, handleCloseModal }) {
 
 
 
+  const queryClient = useQueryClient()
 
   function onSumbit(newCabin) {
 
@@ -38,7 +43,13 @@ function CreateCabinForm({ editedCabinData = {}, handleCloseModal }) {
     })
     else addNewCabin({ ...newCabin, image: image }, {
       onSuccess: () => {
-        handleCloseModal?.()
+        queryClient.invalidateQueries({
+          queryKey: ["cabins"]
+        })
+        toast.success("the cabin has been added")
+      },
+      onError: () => {
+        toast.error("cannot Add this cabin")
       }
     })
   }
