@@ -4,15 +4,31 @@ import supabase from "./supabase";
 
 
 
-export async function getAllBookings() {
+export async function getAllBookings({ filter, sortBy }) {
 
-  let { data: Bookings, error } = await supabase
+
+  let query = supabase
     .from('Bookings')
     .select("*, cabins(name) , guests(fullName,email)")
+  // .gte("totalPrice", 5000).eq(filter.status, filter.value)
+
+  if (filter !== null) query = query.eq(filter.field, filter.value)
+  if (sortBy) query = query.order(sortBy.field, {
+    ascending: sortBy.direction === 'asc',
+
+  })
+
+  let { data: Bookings, error } = await query
+
+
+
+
   if (error) {
     console.log(error);
     throw new Error("Bookings could not get loaded");
   }
+
+
 
   return Bookings
 

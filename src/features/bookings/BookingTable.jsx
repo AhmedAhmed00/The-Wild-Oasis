@@ -11,9 +11,9 @@ function BookingTable() {
   const { bookings, isError, isLoading } = useBookings()
 
 
+
   if (isLoading) return <Spinner />
 
-  // if (!bookings.length) return <Empty resource={'bookings'} />
 
 
 
