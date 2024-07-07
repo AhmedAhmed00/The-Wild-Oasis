@@ -10,7 +10,7 @@ export default function useBookings() {
         value: filterQeury,
 
     }
-    const sortQuery = searchParams.get("sortBy") || "date-desc"
+    const sortQuery = searchParams.get("sortBy") || "startDate-desc"
     const [field, direction] = sortQuery.split('-')
     const sortBy = { field, direction }
 
