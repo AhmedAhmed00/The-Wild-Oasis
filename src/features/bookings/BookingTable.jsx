@@ -5,10 +5,11 @@ import Table from "../../ui/Table";
 import Empty from './../../ui/Empty';
 import useBookings from "./useBookings";
 import BookingRow from '../../features/bookings/BookingRow';
+import Pagination from "../../ui/Pagination";
 
 function BookingTable() {
 
-  const { bookings, isError, isLoading } = useBookings()
+  const { bookings, isError, isLoading, count } = useBookings()
 
 
 
@@ -38,7 +39,7 @@ function BookingTable() {
       />
 
       <Table.Footer>
-        {/* <Pagination count={count} /> */}
+        <Pagination resaultsCount={count} />
       </Table.Footer>
     </Table >
 
