@@ -1,11 +1,12 @@
 import { isFuture, isPast, isToday } from 'date-fns';
 import { useState } from 'react';
-import supabase from 'services/supabase';
-import Button from 'ui/Button';
-import { subtractDates } from 'utils/helpers';
-import { bookings } from './data-bookings';
-import { cabins } from './data-cabins';
 import { guests } from './data-guests';
+import { cabins } from './data-cabins';
+import { bookings } from './data-bookings';
+import Button from './../ui/Button';
+import supabase from './../services/supabase';
+import { subtractDates } from './../utils/helpers';
+
 
 // const originalSettings = {
 //   minBookingLength: 3,
@@ -14,8 +15,11 @@ import { guests } from './data-guests';
 //   breakfastPrice: 15,
 // };
 
+
+
+
 async function deleteGuests() {
-  const { error } = await supabase.from('guests').delete().gt('id', 0);
+  const { error } = await supabase.from('guests').delete().gt('user_id', 0);
   if (error) console.log(error.message);
 }
 
@@ -25,7 +29,7 @@ async function deleteCabins() {
 }
 
 async function deleteBookings() {
-  const { error } = await supabase.from('bookings').delete().gt('id', 0);
+  const { error } = await supabase.from('Bookings').delete().gt('id', 0);
   if (error) console.log(error.message);
 }
 
@@ -39,28 +43,63 @@ async function createCabins() {
   if (error) console.log(error.message);
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 async function createBookings() {
-  // Bookings need a guestId and a cabinId. We can't tell Supabase IDs for each object, it will calculate them on its own. So it might be different for different people, especially after multiple uploads. Therefore, we need to first get all guestIds and cabinIds, and then replace the original IDs in the booking data with the actual ones from the DB
+
+
   const { data: guestsIds } = await supabase
     .from('guests')
-    .select('id')
-    .order('id');
-  const allGuestIds = guestsIds.map((cabin) => cabin.id);
+    .select('user_id')
+    .order('user_id');
+
+  const allGuestIds = guestsIds.map((cabin) => cabin.user_id);
+  console.log('all geuests ids', allGuestIds);
+
+
+
   const { data: cabinsIds } = await supabase
     .from('cabins')
     .select('id')
     .order('id');
+
+
+
+  console.log('all cabin ids', cabinsIds);
+
+
+
+
+
   const allCabinIds = cabinsIds.map((cabin) => cabin.id);
 
+
+
+
   const finalBookings = bookings.map((booking) => {
-    // Here relying on the order of cabins, as they don't have and ID yet
-    const cabin = cabins.at(booking.cabinId - 1);
+    const cabin = cabins.at(booking.cabinID - 1);
     const numNights = subtractDates(booking.endDate, booking.startDate);
     const cabinPrice = numNights * (cabin.regularPrice - cabin.discount);
     const extrasPrice = booking.hasBreakfast
-      ? numNights * 15 * booking.numGuests
-      : 0; // hardcoded breakfast price
+      ? numNights * 15 * booking.numOfGusets
+      : 0;
     const totalPrice = cabinPrice + extrasPrice;
+
 
     let status;
     if (
@@ -81,37 +120,60 @@ async function createBookings() {
     )
       status = 'checked-in';
 
+
+
+
+
+
+
     return {
       ...booking,
       numNights,
       cabinPrice,
       extrasPrice,
       totalPrice,
-      guestId: allGuestIds.at(booking.guestId - 1),
-      cabinId: allCabinIds.at(booking.cabinId - 1),
+      guestId: allGuestIds.at(booking.user_id - 1),
+      cabinID: allCabinIds.at(booking.cabinID - 1),
       status,
     };
+
+
+
   });
 
-  console.log(finalBookings);
 
-  const { error } = await supabase.from('bookings').insert(finalBookings);
+
+
+  const { error } = await supabase.from('Bookings').insert(finalBookings);
   if (error) console.log(error.message);
+
+
+
+
 }
+
+
+
+
+
 
 export function Uploader() {
   const [isLoading, setIsLoading] = useState(false);
 
   async function uploadAll() {
+
+
+
     setIsLoading(true);
     // Bookings need to be deleted FIRST
     await deleteBookings();
     await deleteGuests();
     await deleteCabins();
 
-    // Bookings need to be created LAST
+    // // Bookings need to be created LAST
     await createGuests();
     await createCabins();
+
     await createBookings();
 
     setIsLoading(false);
@@ -138,9 +200,7 @@ export function Uploader() {
 
       <Button
         onClick={uploadAll}
-        // To prevent accidental clicks. Remove to run once!
         disabled={isLoading}
-        // disabled={true}
       >
         Upload ALL sample data
       </Button>

@@ -7,6 +7,8 @@ import useCreateCabin from './useCreateCabin';
 import Modal from '../../ui/Modal';
 import ConfirmDelete from './../../ui/ConfirmDelete';
 import Table from '../../ui/Table';
+import { FaRegEdit } from 'react-icons/fa';
+import { MdDeleteForever } from 'react-icons/md';
 
 
 
@@ -40,6 +42,18 @@ const Discount = styled.div`
   font-weight: 500;
   color: var(--color-green-700);
 `;
+
+
+const Icon = styled.button`
+color: ${props => props.type};
+background-color: transparent;
+border: 0;
+font-size: 1.8rem;
+margin: 0px 3px ;
+border-radius: 8px;
+padding: 5px;
+
+`
 
 function CabinRow({ cabin }) {
 
@@ -84,7 +98,10 @@ function CabinRow({ cabin }) {
         <div>
           <Modal>
             <Modal.Open opens={'edit'}>
-              <button  >Update</button>
+              <Icon type=''>
+
+                <FaRegEdit />
+              </Icon>
             </Modal.Open>
             <Modal.Window name={'edit'}>
               <CreateCabinForm editedCabinData={cabin} />
@@ -94,18 +111,21 @@ function CabinRow({ cabin }) {
 
           <Modal>
             <Modal.Open opens={'delete'}>
-              <button  >Update</button>
+              <Icon type='red'>
+                <MdDeleteForever />
+              </Icon>
+
+
             </Modal.Open>
             <Modal.Window name={'delete'}>
               <ConfirmDelete resource={'cabins'}
                 onConfirm={() => deleteCabin(id)}
               />
             </Modal.Window>
-
           </Modal>
 
 
-          <button onClick={handleDuplicateCabin}>Duplicate</button>
+          {/* <button onClick={handleDuplicateCabin}>Duplicate</button> */}
 
 
         </div>
