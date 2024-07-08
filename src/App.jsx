@@ -14,6 +14,7 @@ import AppLayout from './ui/AppLayout';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { Toaster } from 'react-hot-toast';
+import Booking from './pages/Booking';
 
 
 
@@ -39,6 +40,7 @@ function App() {
               <Route index element={<Dashboard />} />
               <Route path='dashboard' element={<Dashboard />} />
               <Route path="bookings" element={<Bookings />} />
+              <Route path="bookings/:id" element={<Booking />} />
               <Route path="users" element={<NewUsers />} />
               <Route path="cabins" element={<Cabins />} />
               <Route path="account" element={<Account />} />

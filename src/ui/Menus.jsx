@@ -11,7 +11,6 @@ const StyledMenu = styled.div`
 
 const StyledToggle = styled.button`
   background: none;
-
   border: none;
   padding: 0.4rem;
   border-radius: var(--border-radius-sm);
@@ -34,7 +33,6 @@ const StyledList = styled.ul`
   background-color: var(--color-grey-0);
   box-shadow: var(--shadow-md);
   border-radius: var(--border-radius-md);
-
   right: ${(props) => props.position.x}px;
   top: ${(props) => props.position.y}px;
 `;
@@ -69,68 +67,84 @@ const StyledButton = styled.button`
 
 const MenusContext = createContext()
 
-
-
 export default function Menus({ children }) {
-    const [openId, setOpenId] = useState('')
-    const [position, setPosition] = useState({})
-    const close = () => setOpenId('')
-    const open = (id) => setOpenId(id);
+  const [openId, setOpenId] = useState("")
+  const close = () => setOpenId('')
+  const open = setOpenId
+  const [position, setPosition] = useState({})
 
-    return (
-        <MenusContext.Provider value={{ openId, close, open, setPosition }}>
-            {children}
-        </MenusContext.Provider>
-    )
+
+  return (
+    <MenusContext.Provider value={{ openId, close, open, position, setPosition }}>
+      {children}
+    </MenusContext.Provider>
+  )
 }
 
-function Toogle({ id }) {
-    const { openId, close, open, setPosition } = useContext(MenusContext)
-    function handleClick(e) {
-        const rect = e.target.closest('button').getBoundingClientRect()
-        console.log(rect);
-        openId === '' || openId !== id ? open(id) : close()
-        setPosition({
-            x: window.innerWidth - rect.width - rect.x,
-            y: rect.y + rect.height + 8,
-        });
-    }
 
-    return <StyledToggle onClick={handleClick}>
-        <HiEllipsisVertical />
-    </StyledToggle>
+function Toggle({ id }) {
+
+
+  const { openId, open, close, setPosition } = useContext(MenusContext)
+
+
+
+  function handleToggle(e) {
+
+    const rect = e.target.closest("button").getBoundingClientRect();
+    setPosition({
+      x: window.innerWidth - rect.width - rect.x,
+      y: rect.y + rect.height + 8
+    })
+    // closeset call will return the closeset ancestor of type button
+    // لو الاوبن اي دي مش يساوي الاي دي الخاص بالكبين هحدثه بالجديد و اعمل اوبن ولو مفيش اوبن اي دي هفتح غير كدا هقفل
+
+
+
+
+    if (openId === '' || openId !== id) open(id)
+    else close()
+  }
+  return <StyledToggle onClick={handleToggle} >
+    <HiEllipsisVertical />
+  </StyledToggle>
+
 
 }
-
 
 
 
 function List({ id, children }) {
 
-    const { openId, position } = useContext(MenusContext)
-    if (openId !== id) return null
-
-    return createPortal(
-        <StyledList position={position}>
-            {children}
-
-        </StyledList>,
-        document.body
-    )
+  const { openId, position } = useContext(MenusContext)
 
 
+  if (openId !== id) return null
+
+  return createPortal(
+    <StyledList position={position}>{children}</StyledList>, document.body
+  )
 
 }
-function Button({ children }) {
-    return <li>
-        <StyledButton>{children}</StyledButton>
-    </li>
+
+function Button({ children, onClick }) {
+  const { close } = useContext(MenusContext)
+
+  function handleClick() {
+    onClick?.()
+    close()
+
+  }
+  return <li>
+    <StyledButton onClick={handleClick}>
+      {children}
+    </StyledButton>
+  </li>
 
 }
 
 Menus.Menu = StyledMenu
-Menus.Toogle = Toogle
+Menus.Toggle = Toggle
 Menus.List = List
 Menus.Button = Button
-
 

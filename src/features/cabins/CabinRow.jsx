@@ -9,6 +9,8 @@ import ConfirmDelete from './../../ui/ConfirmDelete';
 import Table from '../../ui/Table';
 import { FaRegEdit } from 'react-icons/fa';
 import { MdDeleteForever } from 'react-icons/md';
+import Menus from '../../ui/Menus';
+import Button from '../../ui/Button';
 
 
 
@@ -84,54 +86,60 @@ function CabinRow({ cabin }) {
 
   return (
 
-    <>
 
 
-      <Table.Row >
-        <Img src={image} alt={description} />
-        <CabinName>
-          {name}
-        </CabinName>
-        <p>Fits Up to {maxCapacity} guests</p>
-        <Price>{formatCurrency(regularPrice)}</Price>
-        <Discount>{formatCurrency(discount)}</Discount>
-        <div>
-          <Modal>
-            <Modal.Open opens={'edit'}>
-              <Icon type=''>
-
-                <FaRegEdit />
-              </Icon>
-            </Modal.Open>
-            <Modal.Window name={'edit'}>
-              <CreateCabinForm editedCabinData={cabin} />
-            </Modal.Window>
-          </Modal>
+    <Table.Row >
+      <Img src={image} alt={description} />
+      <CabinName>
+        {name}
+      </CabinName>
+      <p>Fits Up to {maxCapacity} guests</p>
+      <Price>{formatCurrency(regularPrice)}</Price>
+      <Discount>{formatCurrency(discount)}</Discount>
 
 
-          <Modal>
-            <Modal.Open opens={'delete'}>
-              <Icon type='red'>
-                <MdDeleteForever />
-              </Icon>
+
+      <div>
+        <Modal>
+          <Menus.Menu>
+            <Menus.Toggle id={id} />
+            <Menus.List id={id}>
+              <Menus.Button >
+                <Modal.Open opens={'edit'}>
+                  <Icon type='blue'>
+                    <FaRegEdit />
+                  </Icon>
+                </Modal.Open>
+              </Menus.Button>
+              <Menus.Button >
+                <Modal.Open opens={'delete'}>
+                  <Icon type='red'>
+                    <MdDeleteForever />
+                  </Icon>
+                </Modal.Open>
+              </Menus.Button>
+            </Menus.List>
 
 
-            </Modal.Open>
             <Modal.Window name={'delete'}>
-              <ConfirmDelete resource={'cabins'}
+              <ConfirmDelete
+                resource={'cabins'}
                 onConfirm={() => deleteCabin(id)}
               />
             </Modal.Window>
-          </Modal>
+
+            <Modal.Window name={'edit'}>
+              <CreateCabinForm editedCabinData={cabin} />
+            </Modal.Window>
 
 
-          {/* <button onClick={handleDuplicateCabin}>Duplicate</button> */}
+
+          </Menus.Menu>
+        </Modal>
+      </div>
+    </Table.Row>
 
 
-        </div>
-      </Table.Row >
-
-    </>
 
 
 
