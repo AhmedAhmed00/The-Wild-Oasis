@@ -9,6 +9,11 @@ import { formatDistanceFromNow } from "../../utils/helpers";
 import Button from './../../ui/Button';
 import Menus from "../../ui/Menus";
 import { useNavigate } from "react-router-dom";
+import useCheckout from "../check-in-out/useCheckout";
+import Modal from "../../ui/Modal";
+import ConfirmDelete from "../../ui/ConfirmDelete";
+import { MdDeleteForever } from "react-icons/md";
+import useDeleteBooking from "./useDeleteBooking";
 
 const Cabin = styled.div`
   font-size: 1.6rem;
@@ -57,8 +62,15 @@ function BookingRow({
     "checked-out": "silver",
   };
   const navigate = useNavigate()
+  const { mutate: deleteBooking, status: delStatus } = useDeleteBooking()
+  const { checkout, status: checkingoutStatus } = useCheckout();
+
 
   return (
+
+
+
+
     <Table.Row>
       <Cabin>{cabinName}</Cabin>
 
@@ -87,22 +99,56 @@ function BookingRow({
 
       <Amount>{formatCurrency(totalPrice)}</Amount>
 
-      <Menus.Menu>
-        <Menus.Toggle id={bookingId} />
-        <Menus.List id={bookingId}>
-          <Menus.Button
-            onClick={() => navigate(`/bookings/${bookingId}`)}
-          >
-            See Details
-          </Menus.Button>
-
-        </Menus.List>
-      </Menus.Menu>
 
 
 
+      <Modal>
+
+
+
+
+
+        <Menus.Menu>
+          <Menus.Toggle id={bookingId} />
+          <Menus.List id={bookingId}>
+            <Menus.Button
+              onClick={() => navigate(`/bookings/${bookingId}`)}
+            >
+              See Details
+            </Menus.Button>
+            {status === "unconfirmed" &&
+
+              <Menus.Button
+                onClick={() => navigate(`/checkin/${bookingId}`)}
+              >
+                Check in
+              </Menus.Button>
+            }
+            {status === "checked-in" &&
+
+              <Menus.Button
+                onClick={() => checkout(bookingId)}
+              >
+                Check out
+              </Menus.Button>
+            }
+
+            <Modal.Open opens={'delete'} >
+              <Menus.Button >Delete</Menus.Button>
+            </Modal.Open>
+
+          </Menus.List>
+        </Menus.Menu>
+
+        <Modal.Window name={'delete'} >
+          <ConfirmDelete resource={'booking'} onConfirm={() => deleteBooking(bookingId)} />
+        </Modal.Window>
+
+
+      </Modal >
 
     </Table.Row>
+
   );
 }
 

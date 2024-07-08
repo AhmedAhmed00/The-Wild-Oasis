@@ -43,6 +43,7 @@ export default function Filter({ filterField, options }) {
 
   function handleChoose(e) {
     searchParams.set(filterField, e.target.value)
+    searchParams.set("page", 1)
     setSearchParams(searchParams)
   }
 

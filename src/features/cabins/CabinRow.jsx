@@ -112,13 +112,24 @@ function CabinRow({ cabin }) {
                 </Modal.Open>
               </Menus.Button>
               <Menus.Button >
+
+
+
+
                 <Modal.Open opens={'delete'}>
                   <Icon type='red'>
                     <MdDeleteForever />
                   </Icon>
                 </Modal.Open>
+
+
               </Menus.Button>
+
+
+
+
             </Menus.List>
+
 
 
             <Modal.Window name={'delete'}>
