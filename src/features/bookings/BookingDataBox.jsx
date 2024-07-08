@@ -5,7 +5,7 @@ import styled from "styled-components";
 import { formatCurrency, formatDistanceFromNow } from "../../utils/helpers";
 // import box from '../../styles/GlobalStyles'
 import DataItem from "../../ui/DataItem";
-import Flag from './../../ui/Flag';
+import Flag from '../../ui/Flag';
 
 const StyledBookingDataBox = styled.section`
 
