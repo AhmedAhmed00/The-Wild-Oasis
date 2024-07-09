@@ -16,6 +16,8 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { Toaster } from 'react-hot-toast';
 import Booking from './pages/Booking';
 import CheckinBooking from './features/check-in-out/CheckinBooking';
+import PrtotectedRoute from './ui/ProtectedRoute';
+import ProtectedRoute from './ui/ProtectedRoute';
 
 
 
@@ -37,7 +39,8 @@ function App() {
         <BrowserRouter>
           <GlobalStyles />
           <Routes>
-            <Route element={<AppLayout />} >
+
+            <Route element={<ProtectedRoute> <AppLayout /></ProtectedRoute>} >
               <Route index element={<Dashboard />} />
               <Route path='dashboard' element={<Dashboard />} />
               <Route path="bookings" element={<Bookings />} />
@@ -46,11 +49,13 @@ function App() {
               <Route path="users" element={<NewUsers />} />
               <Route path="cabins" element={<Cabins />} />
               <Route path="account" element={<Account />} />
-              <Route path="account" element={<Account />} />
-              <Route path="login" element={<Login />} />
               <Route path="settings" element={<Settings />} />
               <Route path="*" element={<PageNotFound />} />
             </Route>
+
+
+
+            <Route path="login" element={<Login />} />
           </Routes>
         </BrowserRouter>
 

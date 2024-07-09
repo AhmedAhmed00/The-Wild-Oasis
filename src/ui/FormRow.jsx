@@ -1,11 +1,21 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
 const StyledFormRow = styled.div`
   display: grid;
   align-items: center;
-  grid-template-columns: 24rem 1fr 1.2fr;
-  gap: 2.4rem;
   padding: 1.2rem 0;
+  ${props => props.orientation === 'vertical' && css`
+    gap: 1rem;   
+  `}
+  ${props => props.orientation === 'horizontal' && css`
+  
+    gap: 2.4rem;
+    grid-template-columns: 24rem 1fr 1.2fr;
+
+  `}
+
+ 
+
   &:first-child {
     padding-top: 0;
   }
@@ -36,14 +46,18 @@ export const Error = styled.span`
 
 
 
-function FormRow({ label, error, children }) {
-    return (
-        <StyledFormRow>
-            {label && <Label htmlFor={children.props.id}>{label}</Label>}
-            {children}
-            {error && <Error>{error}</Error>}
-        </StyledFormRow>
-    );
+function FormRow({ label, error, children, orientation }) {
+  return (
+    <StyledFormRow orientation={orientation}>
+      {label && <Label htmlFor={children.props.id}>{label}</Label>}
+      {children}
+      {error && <Error>{error}</Error>}
+    </StyledFormRow>
+  );
+}
+
+StyledFormRow.defaultProps = {
+  orientation: "horizontal"
 }
 
 
