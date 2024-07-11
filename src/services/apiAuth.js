@@ -45,7 +45,8 @@ export async function signUp({ fullName, email, password }) {
 
 
     let { data, error } = await supabase.auth.signUp({
-        email, password, options: {
+        email, password,
+        options: {
             data: {
                 fullName,
                 avatar: ""
