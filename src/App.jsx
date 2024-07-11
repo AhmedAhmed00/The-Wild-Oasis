@@ -18,6 +18,7 @@ import Booking from './pages/Booking';
 import CheckinBooking from './features/check-in-out/CheckinBooking';
 import PrtotectedRoute from './ui/ProtectedRoute';
 import ProtectedRoute from './ui/ProtectedRoute';
+import SignupForm from './features/authentication/SignupForm';
 
 
 
@@ -52,9 +53,6 @@ function App() {
               <Route path="settings" element={<Settings />} />
               <Route path="*" element={<PageNotFound />} />
             </Route>
-
-
-
             <Route path="login" element={<Login />} />
           </Routes>
         </BrowserRouter>
