@@ -35,16 +35,14 @@ function App() {
 
   return (
     <>
+
       <DarkModeProvider >
-
-
         <QueryClientProvider client={queryClient} >
           <Toaster position='top-center' />
           <ReactQueryDevtools initialIsOpen={false} />
           <BrowserRouter>
             <GlobalStyles />
             <Routes>
-
               <Route element={<ProtectedRoute> <AppLayout /></ProtectedRoute>} >
                 <Route index element={<Dashboard />} />
                 <Route path='dashboard' element={<Dashboard />} />

@@ -12,9 +12,9 @@ function BookingTable() {
 
   const { bookings, isError, isLoading, count } = useBookings()
 
-
-
   if (isLoading) return <Spinner />
+
+
 
 
 
