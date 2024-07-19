@@ -15,5 +15,5 @@ export default function useRecentBookings() {
 
 
 
-    return { isLoading, bookings }
+    return { isLoading, bookings, numDays }
 }

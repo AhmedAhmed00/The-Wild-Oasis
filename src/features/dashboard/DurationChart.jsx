@@ -1,18 +1,14 @@
-import { useDarkMode } from 'context/DarkModeContext';
-import {
-  Cell,
-  Legend,
-  Pie,
-  PieChart,
-  ResponsiveContainer,
-  Tooltip,
-} from 'recharts';
+
+
 import styled from 'styled-components';
-import { box } from 'styles/styles';
-import Heading from 'ui/Heading';
+import Heading from '../../ui/Heading';
+import { Cell, Legend, Pie, PieChart, ResponsiveContainer, Tooltip } from 'recharts';
+import { useDarkMode } from '../../context/ModeContext';
 
 const ChartBox = styled.div`
-  ${box}
+background-color: var(--color-grey-0);
+  border: 1px solid var(--color-grey-100);
+  border-radius: var(--border-radius-md);
   padding: 2.4rem 3.2rem;
 
   grid-column: 3 / span 2;
@@ -285,51 +281,29 @@ function prepareData(startData, stays) {
 }
 
 function DurationChart({ confirmedStays }) {
-  const { isDarkMode } = useDarkMode();
-  const startData = isDarkMode ? startDataDark : startDataLight;
-  const data = prepareData(startData, confirmedStays);
+  const { isDark } = useDarkMode()
+  const startData = isDark ? startDataDark : startDataLight
+  const data = prepareData(startData, confirmedStays)
 
   return (
     <ChartBox>
-      <Heading type='h2'>Stay duration summary</Heading>
+      <Heading as='h2'>
+        Stay Duration Summury
+      </Heading>
       <ResponsiveContainer width='100%' height={240}>
         <PieChart>
-          <Pie
-            data={data}
-            nameKey='duration'
-            dataKey='value'
-            cx='40%'
-            cy='50%'
-            innerRadius={85}
-            outerRadius={110}
-            fill='#4f46e5'
-            paddingAngle={3}
-            startAngle={180}
-            endAngle={-180}
-          >
-            {data.map((entry, i) => (
-              <Cell
-                key={entry.duration}
-                fill={entry.color}
-                stroke={entry.color}
-              />
-            ))}
+          <Pie paddingAngle={3} nameKey='duration' data={data} dataKey='value' innerRadius={80} outerRadius={120} >
+            {startDataLight.map(entry => <Cell fill={entry.color}
+              stroke={entry.color} key={entry.duration} />)}
           </Pie>
           <Tooltip />
-          <Legend
-            // verticalAlign='bottom'
-            // align='center'
-            verticalAlign='middle'
-            align='right'
-            width='30%'
-            layout='vertical'
-            iconSize={15}
-            iconType='circle'
-          />
+          <Legend verticalAlign='middle' align='right' width='30%' layout='vertical' />
         </PieChart>
       </ResponsiveContainer>
-    </ChartBox>
-  );
+
+    </ChartBox >
+  )
+
 }
 
 export default DurationChart;

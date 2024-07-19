@@ -11,7 +11,6 @@ const StyledSidebar = styled.aside`
   display: flex;
   max-height: 100vh;
   flex-direction: column;
-
   gap: 3.2rem;
 `;
 
