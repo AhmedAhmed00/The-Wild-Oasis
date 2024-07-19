@@ -1,7 +1,7 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { useMutation } from '@tanstack/react-query'
 
 import { insertNewCabin } from '../../services/apiCabins'
-import toast from 'react-hot-toast'
+
 
 export default function useCreateCabin() {
 

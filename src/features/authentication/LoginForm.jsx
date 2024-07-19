@@ -7,8 +7,8 @@ import useLogin from "./useLogin";
 
 function LoginForm() {
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("devahmedahmed@gmail.com");
+  const [password, setPassword] = useState("Ahmed@123");
   const { login, status } = useLogin()
 
 
@@ -23,7 +23,6 @@ function LoginForm() {
         <Input
           type="email"
           id="email"
-          autoComplete="username"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
