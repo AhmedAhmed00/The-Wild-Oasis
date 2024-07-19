@@ -9,7 +9,7 @@ const StyledSidebar = styled.aside`
   border-right: 1px solid var(--color-grey-100);
   grid-row: 1 / -1;
   display: flex;
-  max-height: 100vh;
+  /* max-height: 100vh; */
   flex-direction: column;
   gap: 3.2rem;
 `;

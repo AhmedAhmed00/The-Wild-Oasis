@@ -34,7 +34,7 @@ function CabinTable() {
 
   useEffect(() => {
     const x = searchParams.get("discount")
-    console.log(x);
+
   }, [searchParams])
 
   const filterParam = searchParams.get("discount") || 'all'
@@ -49,7 +49,7 @@ function CabinTable() {
   const [field, direction] = sortBy.split('-')
   const modifier = direction === 'asc' ? 1 : -1
   const sortedData = filterdData?.sort((a, b) => (a[field] - b[field]) * modifier)
-  console.log(modifier, sortedData);
+
 
 
   if (isLoading) return <Spinner />

@@ -11,7 +11,7 @@ import useSignup from "./useSignup";
 function SignupForm() {
 
   const { handleSubmit, register, formState, reset, getValues } = useForm()
-  const { signup, status } = useSignup()
+  const { signup } = useSignup()
   const { errors } = formState
 
   function onSubmit(data) {
@@ -21,14 +21,12 @@ function SignupForm() {
     // console.log(data);
 
   }
-  function onError(err) {
-    console.log(err);
-  }
+
 
 
 
   return (
-    <Form onSubmit={handleSubmit(onSubmit, onError)}>
+    <Form onSubmit={handleSubmit(onSubmit)}>
 
 
 
@@ -70,7 +68,7 @@ function SignupForm() {
 
       >
         <Input
-          type=""
+          type="password"
           id="password"
           {...register("password", {
             required: "required input",
@@ -93,8 +91,9 @@ function SignupForm() {
       <FormRow label="Repeat password" error={errors?.passwordConfirm?.message}
       >
         <Input
-          type=""
+          type="password"
           id="passwordConfirm"
+
 
           {...register("passwordConfirm", {
             required: "required input",

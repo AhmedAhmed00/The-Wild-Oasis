@@ -22,7 +22,7 @@ export async function getLoggedInUser() {
     if (!session.session) return null
     const { data, error } = await supabase.auth.getUser()
 
-    console.log(data);
+    // console.log(data);
 
     return data?.user
 
@@ -66,3 +66,21 @@ export async function signUp({ fullName, email, password }) {
 
 }
 
+
+export async function updateCurrentUser({ password, fullName }) {
+
+    let updateData;
+    if (password) updateData = { password }
+    if (fullName) updateData = { data: { fullName } }
+    const { data, error } = await supabase.auth.updateUser(updateData)
+    console.log(data);
+
+    if (error) {
+        console.log(error);
+        throw new Error("there is an errror while updating")
+    }
+    ;
+
+    return data
+
+}

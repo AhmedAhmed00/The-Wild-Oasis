@@ -72,7 +72,7 @@ export async function insertNewCabin(newCabin, id) {
             .eq('id', newCabin.id) // the row which is its id equals the cabin id
     }
 
-    console.log(data);
+    // console.log(data);
 
 
 

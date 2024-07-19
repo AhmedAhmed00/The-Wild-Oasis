@@ -15,7 +15,7 @@ function UpdateSettingsForm() {
 
   function handleUpdateSettings(e, fieldName) {
     const valueToUpdate = e.target.value
-    console.log(valueToUpdate);
+    // console.log(valueToUpdate);
     if (!valueToUpdate) return;
 
     mutateSettings({

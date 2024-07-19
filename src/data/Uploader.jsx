@@ -80,7 +80,7 @@ async function createBookings() {
 
 
 
-  console.log('all cabin ids', cabinsIds);
+
 
 
 

@@ -40,7 +40,7 @@ const NoActivity = styled.p`
 
 function TodayActivity() {
   const { isLoading, activities } = useTodayActivity();
-  console.log(isLoading);
+  // console.log(isLoading);
 
 
 

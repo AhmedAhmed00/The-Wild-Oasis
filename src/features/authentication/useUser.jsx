@@ -7,5 +7,5 @@ export default function useUser() {
         queryFn: getLoggedInUser
     })
 
-    return { isLoading, isError, isAuthenticated: user?.role === 'authenticated' }
+    return { user, isLoading, isError, isAuthenticated: user?.role === 'authenticated' }
 }

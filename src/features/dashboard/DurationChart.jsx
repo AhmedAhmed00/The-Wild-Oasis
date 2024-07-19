@@ -222,62 +222,7 @@ function prepareData(startData, stays) {
 
   return data;
 
-  /*
-  const tempData = stays.reduce((obj, cur) => {
-    const num = cur.numNights;
-    console.log(num, obj);
-    // For 1, 2, or 3 nights, we have single category
-    if (num <= 3) {
-      obj[`${num} nights`] = {
-        ...obj[`${num} nights`],
-        value: obj[`${num} nights`].value + 1,
-      };
-      return obj;
-    }
-    if (num === 4 || num === 5) {
-      console.log(obj['4-5 nights']);
-      console.log(obj['4-5 nights'].value + 1);
 
-      obj['4-5 nights'] = {
-        ...obj['4-5 nights'],
-        value: obj['4-5 nights'].value + 1,
-      };
-      return obj;
-    }
-    if (num === 6 || num === 7) {
-      obj['6-7 nights'] = {
-        ...obj['6-7 nights'],
-        value: obj['6-7 nights'].value + 1,
-      };
-      return obj;
-    }
-    if (num >= 8 && num <= 14) {
-      obj['8-14 nights'] = {
-        ...obj['8-14 nights'],
-        value: obj['8-14 nights'].value + 1,
-      };
-      return obj;
-    }
-    if (num >= 15 && num <= 21) {
-      obj['15-21 nights'] = {
-        ...obj['15-21 nights'],
-        value: obj['15-21 nights'].value + 1,
-      };
-      return obj;
-    }
-    if (num >= 21) {
-      obj['21+ nights'] = {
-        ...obj['21+ nights'],
-        value: obj['21+ nights'].value + 1,
-      };
-      return obj;
-    }
-
-    return obj;
-  }, startData);
-
-  return Object.values(tempData).filter((obj) => obj.value > 0);
-  */
 }
 
 function DurationChart({ confirmedStays }) {
