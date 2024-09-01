@@ -19,7 +19,7 @@ function SalesChart({ bookings, numDays }) {
   // In the chart we need to set colors, but we can't do it based on CSS variables, because we have no access to them here. So let's set them manually
   const { isDark } = useDarkMode();
 
-  // console.log(bookings);
+  console.log(bookings);
   const allDates = eachDayOfInterval({
     start: subDays(new Date(), numDays - 1),
     end: new Date(),
@@ -38,7 +38,7 @@ function SalesChart({ bookings, numDays }) {
         .reduce((acc, cur) => acc + cur.extrasPrice, 0),
     };
   });
-  // console.log(data);
+  console.log(data);
 
   const colors = isDark
     ? {

@@ -1,8 +1,13 @@
-# React + Vite
+# The Wild Oasis
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+An internal hotel management tool lets employees track revenue and occupancy rates with interactive charts, manage cabins, and handle reservations, check-ins, and check-out details. It allows adding new users, updating existing user data, and managing application settings. The backend database and API are created by Supabase, ensuring a secure experience for all users.
 
-Currently, two official plugins are available:
+## Tech Stack
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- React.js
+- React-Router
+- Tailwind CSS
+- React-Query
+- React Hook Form
+- React Slick
+- JWT Decode
